@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+
+
+	<package name="default" namespace="/" extends="struts-default">
+		
+		<!-- 
+			这里的struts-default是struts-default.xml而不是defaultStack拦截器栈
+			在struts-default.xml使用的是defaultStack作为默认的拦截器栈
+			<default-interceptor-ref name="defaultStack"/>
+			
+			如果不需修改拦截器栈的属性，都一直直接定义拦截器栈为paramsPrepareParamsStack
+			<default-interceptor-ref name="paramsPrepareParamsStack"/>
+		 -->
+		
+		
+		<interceptors>
+		    <interceptor-stack name="myStack">
+		        <interceptor-ref name="paramsPrepareParamsStack">
+		        	<!-- 是否执行prepare方法 -->
+		            <param name="prepare.alwaysInvokePrepare">false</param>
+		        </interceptor-ref>
+		    </interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+		<action name="emp_*" class="action.EmployeeAction" method="{1}">
+			<result name="list">/WEB-INF/pages/list.jsp</result>	
+			<result name="success" type="redirectAction">emp_list</result>
+			<result name="input">/WEB-INF/pages/input.jsp</result>
+		</action>
+	</package>
+
+</struts>
